@@ -7,9 +7,51 @@
         
     <body>
         <div class="ui inverted menu">
-            <div class="ui container">
-                <div class= "header item"><i class = "big snowflake icon"></i>Blog Site</div>
-                <a href="/" class="item">Home</a>
-                <a href="/blogs/new" class="item">New Post</a>
+          <div class="item">
+            <i class = "big teal edit icon"></i>
+            Blog Site
+          </div>
+          <a href="/" class=" red item">
+            Home
+          </a>
+          <a href="/blogs/new" class="item">
+            New Post
+          </a>
+          
+          <div class=" right menu">
+              <%if(!currentUser){%>
+                <div class="item">
+                  <a href="/login" class="ui compact inverted button">Log in</a>
+                </div>
+                <div class="item">
+                  <a href="/register" class="ui compact inverted button">Sign Up</a>
+                </div>
+              <%} else{%>
+                <div class="item">
+                  <div href="#">Signed in as <%=currentUser.username%> <i class="large teal user circle icon"></i></div>
+                </div>
+                <div class="item">
+                  <a href="/logout" class="ui compact inverted button">Sign out</a>
+                </div>
+              <%}%>
+              </div> 
+        </div>
+        <% if(success && success.length > 0) {%>
+        <div class= "ui container">
+          <div class="ui green message" class="ui negative message">
+            <div class="header">
+              <%=success%>
             </div>
           </div>
+        </div>
+        <%}%>
+
+        <% if(error && error.length > 0) {%>
+        <div class= "ui container">
+          <div class="ui red message" class="ui negative message">
+            <div class="header">
+              <%=error%>
+            </div>
+          </div>
+        </div>
+        <%}%>  

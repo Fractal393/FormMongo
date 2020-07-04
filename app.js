@@ -2,8 +2,20 @@ var express = require("express");
 var methodOverride = require("method-override");
 var app = express();
 var expressSanitizer = require("express-sanitizer");
-bodyParser = require("body-parser");
-mongoose = require("mongoose");
+var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+var flash = require("connect-flash");
+var Blog = require("./models/blog");
+var Comment = require("./models/comment");
+const blog = require("./models/blog");
+var passport = require("passport");
+var User = require("./models/user");
+var LocalStrategy = require("passport-local");
+var passportLocalMongoose = require("passport-local-mongoose");
+
+var commentRoutes = require("./routes/comments.js"),
+    blogRoutes = require("./routes/blogs"),
+    authRoutes = require("./routes/auth")
 
 //CONNECTION
 mongoose.connect('mongodb://127.0.0.1:27017/blog', {useNewUrlParser: true});
@@ -14,88 +26,32 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine","ejs");
 app.use(expressSanitizer());
 app.use(methodOverride("_method"));
+app.use(flash());
 
-//SCHEMA
-var blogSchema = new mongoose.Schema({
-    title: String,
-    image: String,
-    body: String,
-    created: {type: Date, default: Date.now}
-});
-var Blog= mongoose.model("Blog",blogSchema);
+app.use(require("express-session")({
+	secret: "Sports page",
+	resave: false,
+	saveUninitialized: false 
+}));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
-//MAIN ROUTE
-app.get("/",function(req,res){
-    res.redirect("/blogs");
-});
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-app.get("/blogs",function(req,res){
-    Blog.find({},function(err,blogs)
-    {
-        if(err){console.log(err);}
-        else{res.render("index.ejs",{blogs:blogs});}
-    })   
-});
-
-app.get("/blogs/new",function(req,res)
+app.use(function(req,res,next)
 {
-    res.render("new.ejs");
-});
+    res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success")
+    next();
+})
 
-
-//CREATE ROUTE
-app.post("/blogs",function(req,res)
-{
-    req.body.blog.body = req.sanitize(req.body.blog.body)
-    Blog.create(req.body.blog,function(err,newBlog)
-    {
-        if(err){render("new.ejs");}
-        else{res.redirect("/blogs");}
-    });
-});
-
-
-//SHOW ROUTE
-app.get("/blogs/:id",function(req,res)
-{
-    Blog.findById(req.params.id, function(err,foundBlog)
-    {
-        if(err){res.redirect("/blogs");}
-        else{res.render("show.ejs",{blog: foundBlog});}
-    })
-});
-
-//EDIT ROUTE
-app.get("/blogs/:id/edit",function(req,res)
-{
-    Blog.findById(req.params.id, function(err,foundBlog)
-    {
-        if(err){res.redirect("/blogs");}
-        else{res.render("edit.ejs",{blog: foundBlog});}
-    }) 
-});
-
-//UPDATE ROUTE  
-app.put("/blogs/:id", function(req,res)
-{   
-    req.body.blog.body = req.sanitize(req.body.blog.body)
-    Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err,updatedBlog)
-    {
-        if(err){res.redirect("/blogs")}
-        else{res.redirect("/blogs/"+req.params.id);}
-    })
-});
-
-//DELETE ROUTE  
-app.delete("/blogs/:id", function(req,res)
-{
-   Blog.findByIdAndRemove(req.params.id, function(err)
-   {
-       if(err){res.redirect("/blogs");}
-       else{res.redirect("/blogs");}
-   })
-});
+app.use(blogRoutes);
+app.use(commentRoutes);
+app.use(authRoutes);
 
 //PORT CONNECTION 
 let port = 13579;
