@@ -2,6 +2,7 @@
     <head>
         <title>Blog App</title>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link type="text/css" href="/public/stylesheets/app.css">
     </head>
         
@@ -30,6 +31,7 @@
                 <div class="item">
                   <div href="#">Signed in as <%=currentUser.username%> <i class="large teal user circle icon"></i></div>
                 </div>
+
                 <div class="item">
                   <a href="/logout" class="ui compact inverted button">Sign out</a>
                 </div>
@@ -38,7 +40,7 @@
         </div>
         <% if(success && success.length > 0) {%>
         <div class= "ui container">
-          <div class="ui green message" class="ui negative message">
+          <div class="ui floating green message" ">
             <div class="header">
               <%=success%>
             </div>
@@ -48,7 +50,7 @@
 
         <% if(error && error.length > 0) {%>
         <div class= "ui container">
-          <div class="ui red message" class="ui negative message">
+          <div class="ui floating red message" >
             <div class="header">
               <%=error%>
             </div>
