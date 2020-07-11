@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 var Blog = require("../models/blog");
 const blog = require("../models/blog");
+const multer = require("multer");
+const upload = multer({dest: "uploads/"});
 
 //HOME ALL BLOGS
 router.get("/blogs",function(req,res){
@@ -19,8 +21,8 @@ router.get("/blogs/new",isLoggedIn,function(req,res)
 });
 
 //CREATE BLOG
-router.post("/blogs",isLoggedIn,function(req,res)
-{
+router.post("/blogs",upload.single("blogimage"),isLoggedIn,function(req,res)
+{   console.log(req.file);
     req.body.blog.body = req.sanitize(req.body.blog.body)
     Blog.create(req.body.blog,function(err,blog)
     {   
@@ -107,7 +109,8 @@ router.delete("/blogs/:id",isLoggedIn, function(req,res)
     {
         Blog.findByIdAndRemove(req.params.id, function(err,blog)
         {
-            if(err){res.redirect("/blogs");}
+            if(err){ console.log(err);
+                res.redirect("/blogs");}
             else{
                 if(blog.author.id.equals(req.user._id))
                 {

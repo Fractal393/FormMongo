@@ -5,40 +5,60 @@
       margin-top: 150px;
     }
 
-    .heading{
-        background-color: teal;
+    .space{
+        margin-top: 25px;
+        margin-bottom: 30px;
+    }
+    .imagesize{
+        height: 110%;
+        width: 100%;
     }
     
   </style>
   
-<div class="ui main text container ">
-    <div class= "ui center aligned block huge teal compact header heading">Your Daily Read</div>
+<div class="ui main text fluid container space ">
+    <div class= "ui center aligned huge header space">
+        <div class="circular ui massive black compact active button space">
+            <i class=" teal i  cursor icon"></i>
+            Your Daily Read
+            <i class=" teal right floated i cursor icon"></i>
+        </div>
+    </div>
     <div class="ui top attached segment">
         <div class="ui divided relaxed items">
             <% blogs.forEach(function(blogs){ %>
                 <div class="item upper">
                     <div class="ui medium bordered image">
-                        <img class="small" src="<%= blogs.image %>">
+                        <img  src="<%= blogs.image %>">
                     </div>
-                    <div class="middle aligned content label">
-                        <a class="header" href="/blogs/<%=blogs._id%>"><%=blogs.title%></a>
+                    <div class="middle aligned content label">                    
+                        <a class="ui teal large header "><%=blogs.title%></a>
                        
-                        <div class="ui right floated label">Posted on: <%=blogs.created.toDateString()%></div>                        
+                        <div class="ui right floated label"><%=blogs.created.toDateString()%></div>                        
                         
                         <div class="meta">
-                            <span class="cinema">About:</span>
+                            <span class="cinema">Theme: <%=blogs.theme%></span>
                         </div>
                         
                         <div class="description">
-                            <p><%-blogs.body.substr(0, 170)%>...</p>
+                            <p><%if(blogs.body.substr(0, 170)){ %>
+                                    <%-blogs.body.substr(0, 170)%>...
+                                <%}%>
+                               <% if(!blogs.body.substr(0, 170)){ %>
+                                    <%-blogs.body.substr(0, 170)%>...
+                               <%}%>
+                               <% if(blogs.body==null){ %>
+                                <%-blogs.body.substr(0, 170)%>...
+                           <%}%>
+                               </p>
                         </div>
-
+ 
                         <div class="item">
                         <a href="/blogs/<%=blogs._id%>">
                         <div class="ui animated compact right floated teal button" tabindex="0">
                             <div class="visible content">Read More</div>
                             <div class="hidden content">
-                              <i class="right arrow icon"></i>
+                              <i class="right black arrow icon"></i>
                             </div>
                         </div>
                         </a>

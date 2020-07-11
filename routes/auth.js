@@ -39,7 +39,7 @@ router.post("/login",passport.authenticate("local",{
 	successRedirect: "/",
 	failureRedirect: "/login"
 }) ,function(req, res){
-	
+	req.flash("succcess", "Welcome back" + user.username);
 })
 
 //LOGOUT ROUTE

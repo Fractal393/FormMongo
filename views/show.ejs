@@ -1,52 +1,127 @@
 <%- include("partials/header") %>
 
-<div class="ui main text container ">
-    <div class= "ui huge header "><%=blog.title%> Made By <%=blog.author.username%></div>
-    <div class="ui top attached segment">
+
+<style type="text/css">
+    .upper {
+      margin-top: 150px;
+    }
+
+    .space{
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .space1{
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+    .imagesize{
+        height: 110%;
+        width: 100%;
+    }
+    .textcolor{
+        color: black;
+    }
+  </style>
+
+<div class="ui main text container space">
+    <div class= "ui center aligned huge header space">
+        <div class="circular ui massive black compact active button space">
+            <i class=" teal i  cursor icon"></i>
+            <%=blog.title%>
+            <i class=" teal right floated i cursor icon"></i>
+        </div>
+    </div>
+   
+    <div class="ui top attached segment container color ">
         <div class="item">
-            <img class="ui centered rounded image" src="<%= blog.image %>" >
-            <div class="content">
-                <span><%=blog.created.toDateString()%></span>
+            <img class="ui centered rounded image space1" src="<%= blog.image %>" >
+
+            <a class=" textcolor ui black right ribbon label "><i class="calendar large teal alternate outline icon"></i><%=blog.created.toDateString()%> </a>
+            
+            <div class=" ui content container space">
+
+            <div class="description ui message inverted">
+                <p><%-blog.body %></p>
             </div>
-            <div class="description">
-                <p><%- blog.body %></p>
             </div>
+
             <% if(currentUser){ %>
                <% if(blog.author.id.equals(currentUser._id)){ %>
-            <a class="ui big black button" href="/blogs/<%=blog._id%>/edit">Edit</a>
-            
-            <form id="delete" action="/blogs/<%=blog._id%>?_method=DELETE" method="POST">
-                <button class="ui big black button">Delete</button>
-            </form>
+            <div class="container">
+                <div class="ui two column very relaxed grid">
+                    <div class="column">
+                        <a href="/blogs/<%=blog._id%>/edit" >
+                        <div class="ui inverted green circular right floated big vertical animated button" tabindex="0">
+                            <div class="hidden content ">Edit</div>
+                            <div class="visible content">
+                              <i class="green right floated edit icon"></i>
+                            </div>
+                          </div>
+                        </a>  
+                    </div>
+
+                    <div class="column">
+                        <form action="/blogs/<%=blog._id%>?_method=DELETE" method="POST">
+                            <button class="ui inverted green circular big red vertical animated button " tabindex="0">
+                                <div class="hidden content">Delete</div>
+                                <div class="visible content">
+                                  <i class="red right floated trash icon"></i>
+                                </div>
+                            </button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+                
             <%}}%>
+            <a class="ui medium black right ribbon label space "><i class="pencil alternate teal large icon"></i>By <%=blog.author.username%> </a>
         </div>
     </div>
 </div>
 
-<div class="ui main text container ">
-    <div class= "ui huge header ">COMMENTS</div>
-    <div class="text-right">
-        <a class="btn btn-success" href="/blogs/<%=blog._id%>/comments/new">Add new comment</a>
-    </div>
-    <div class="ui top attached segment">
-        <% blog.comments.forEach(function(comment){ %>
-            <div class="item">
-            <div class="col-md-12">
-                <%=comment.author.username%>
-                <p>
-                    <%=comment.text %> 
-                </p>
-                <% if(currentUser){ %>
-                    <% if(comment.author.id.equals(currentUser._id)){ %>
-                <a class="ui big black button" href="/blogs/<%=blog._id%>/comments/<%=comment._id%>/edit">Edit</a>
-                <form  action="/blogs/<%=blog._id%>/comments/<%=comment._id%>?_method=DELETE" method=POST>
-                    <input type="submit" value="delete">
-                </form>
-                <%}}%>
+<div class="ui main text top attached segment container">
+    <a class="ui black ribbon label space "><i class=" teal large icon"></i>COMMENTS </a>
+    
+        <div class="text-right">
+            <a class="ui compact teal button" href="/blogs/<%=blog._id%>/comments/new"> <i class=" black pencil icon"></i>Add new comment</a>
+        </div>
+        <div class="ui comments">
+            <div class="comment">
+                <% blog.comments.forEach(function(comment){ %>
+                    <div class="content">
+                        <i class="ui circular small inverted user teal icon"></i>
+                        <a class="author"> <%=comment.author.username%></a>
+                        <div class="metadata">
+                            <div class="date"><%=comment.created.toDateString()%></div>
+                        </div>
+                        <div class=" container">
+                        <div class="ui container text">
+                            <%=comment.text %> 
+                        </div>
+
+                        <div class="ui container text">
+                        <% if(currentUser){ %>
+                            <% if(comment.author.id.equals(currentUser._id)){ %>
+                                <a  href="/blogs/<%=blog._id%>/comments/<%=comment._id%>/edit">
+                                <button class="circular mini ui icon button">
+                                    <i class="black pencil icon"></i>
+                                </button>
+                                </a>
+                                <div class="metadata">
+                                    <form  action="/blogs/<%=blog._id%>/comments/<%=comment._id%>?_method=DELETE" method=POST>
+                                        <button class="circular mini ui icon button">
+                                            <i class="black trash icon"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                        <%}}%>
+                        </div>
+                        </div>
+                    </div>
+                <% }) %>
             </div>
         </div>
-        <% }) %>
-    </div>
 </div>
 
 <%- include("partials/footer") %>

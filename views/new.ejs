@@ -1,7 +1,7 @@
 <%- include("partials/header") %>
 
 <div class="ui main text container segment">
-    <div class= "ui huge header">New Blog</div>
+    <div class= "ui huge teal header">New Blog</div>
     <form class="ui form" action="/blogs" method="POST">
         <div class="field">
             <label>Title</label>
@@ -11,12 +11,46 @@
             <label>Image</label>
             <input type="text" name="blog[image]" placeholder="image">
         </div>
+
+        <input type="file" name="blogimage" (change)="fileEvent($event)" id="blogimage" />
+
+         <label for="blogimage" class="ui huge red right floated button">
+            <i class="ui upload icon"></i> 
+                 Upload image
+        </label>
+
+        <div class="field">
+            <label>Theme</label>
+            <select type="text" name="blog[theme]" placeholder="theme" class="ui fluid dropdown">
+                <option class="default text">-select-</option>
+                <option value="Self">Self</option>
+                <option value="Society">Society</option>
+                <option value="Relationships">Relationships</option>
+                <option value="Health">Health</option>
+                <option value="Coronovirus">Coronovirus</option>
+                <option value="Politics">Politics</option>
+                <option value="Science">Science</option>
+                <option value="Life">Life</option>
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Technology">Technology</option>
+                <option value="Education">Education</option>
+                <option value="World">World</option>
+                <option value="Culture">Culture</option>
+                <option value="Art">Art</option>
+                <option value="Addiction">Addiction</option>
+                <option value="Travel">Travel</option>
+                <option value="Books">Books</option>
+            </select>
+        </div>
+
+
         <div class="field">
             <label>Blog Contents</label>
             <textarea name="blog[body]"></textarea>
         </div>
         
-        <button class="ui big black button">Submit</button>
+        <button class="ui teal button">Submit</button>
     </form>
 </div>
 
