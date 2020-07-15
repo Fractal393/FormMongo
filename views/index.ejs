@@ -46,13 +46,14 @@
 
                                 <%-blogs.body%>...
                                 <%}%>
-
-                                <%if(!blogs.body==null && blogs.body.substr(0, 170)){ %>
+                                
+                                <%if(blogs.body != null){%>
+                                <%if( blogs.body.substr(0, 170)){ %>
                                     <%-blogs.body.substr(0, 170)%>...
                                 <%}%>
-                               <% if(!blogs.body==null && !blogs.body.substr(0, 170)){ %>
+                               <% if(!blogs.body.substr(0, 170)){ %>
                                     <%-blogs.body.substr(0, 170)%>...
-                               <%}%>
+                               <%}}%>
 
                                
                                
