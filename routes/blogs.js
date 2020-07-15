@@ -22,7 +22,7 @@ router.get("/blogs/new",isLoggedIn,function(req,res)
 
 //CREATE BLOG
 router.post("/blogs",upload.single("blogimage"),isLoggedIn,function(req,res)
-{   console.log(req.file);
+{
     req.body.blog.body = req.sanitize(req.body.blog.body)
     Blog.create(req.body.blog,function(err,blog)
     {   
