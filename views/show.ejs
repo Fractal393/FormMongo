@@ -10,6 +10,10 @@
         margin-top: 30px;
         margin-bottom: 30px;
     }
+    .space2{
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
     .space1{
         margin-top: 5px;
         margin-bottom: 20px;
@@ -80,18 +84,20 @@
     </div>
 </div>
 
-<div class="ui main text top attached segment container">
+<div class="space2">
+<div class="ui main text segment container">
     <a class="ui black ribbon label space "><i class=" teal large icon"></i>COMMENTS </a>
     
         <div class="text-right">
-            <a class="ui compact teal button" href="/blogs/<%=blog._id%>/comments/new"> <i class=" black pencil icon"></i>Add new comment</a>
+            <a class="ui compact teal button" href="/blogs/<%=blog._id%>/comments/new"> <i class=" black pencil icon"></i>Add comment</a>
         </div>
-        <div class="ui comments">
+        <div class="space2">
+        <div class="ui comments container">
             <div class="comment">
                 <% blog.comments.forEach(function(comment){ %>
                     <div class="content">
                         <i class="ui circular small inverted user teal icon"></i>
-                        <a class="author"> <%=comment.author.username%></a>
+                        <a class="author label"> <%=comment.author.username%></a>
                         <div class="metadata">
                             <div class="date"><%=comment.created.toDateString()%></div>
                         </div>
@@ -122,6 +128,8 @@
                 <% }) %>
             </div>
         </div>
+        </div>
+</div>
 </div>
 
 <%- include("partials/footer") %>
