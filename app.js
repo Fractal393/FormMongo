@@ -23,9 +23,6 @@ var commentRoutes = require("./routes/comments.js"),
 //mongoose.connect('mongodb://127.0.0.1:27017/blog', {useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect('mongodb+srv://Thejus:<sH1q2VbhPltJhawf>@blogapp.jhhat.mongodb.net/<blog>?retryWrites=true&w=majority ', {useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connection.on('error', err => {
-    console.log(err);
-});
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine","ejs");
