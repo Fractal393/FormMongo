@@ -19,10 +19,17 @@ var commentRoutes = require("./routes/comments.js"),
     blogRoutes = require("./routes/blogs"),
     authRoutes = require("./routes/auth")
 
-//CONNECTION
-//mongoose.connect('mongodb://127.0.0.1:27017/blog', {useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect('mongodb+srv://Thejus:<sH1q2VbhPltJhawf>@blogapp.jhhat.mongodb.net/<blog>?retryWrites=true&w=majority ', {useNewUrlParser: true, useUnifiedTopology: true });
-
+    var port = process.env.PORT;
+    var uristring = process.env.MONGODB_URI;
+    
+    //CONNECTION TO DB
+    mongoose.connect(uristring, function (err, res) {
+        if (err) { 
+          console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+        } else {
+          console.log ('Succeeded connected to: ' + uristring);
+        }
+      });
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine","ejs");
@@ -56,8 +63,8 @@ app.use(commentRoutes);
 app.use(authRoutes);
 
 //PORT CONNECTION 
-let port = 13579;
-app.listen(process.env.PORT | port, process.env.IP, function()
+
+app.listen(port, function()
 {
-    console.log("Yelpcamp app has started at localhost:" + port);
+    console.log(" app has started at localhost:" + port);
 });
